@@ -527,8 +527,8 @@ namespace FractalViewer {
 	// Загрузка базы и паттерна конструктивного фрактала ("по умолчанию")
 	private: System::Void DefaultBaseAndPattern(Void)
 	{
-		OriginBase->Add(PointD(-1.5, 0));
-		OriginBase->Add(PointD(1.5, 0));
+		OriginBase->Add(PointD(0, 0));
+		OriginBase->Add(PointD(1, 0));
 
 		OriginPattern->Add(PointD(0, 0));
 		OriginPattern->Add(PointD(0.25, 0));
@@ -596,7 +596,7 @@ namespace FractalViewer {
 			{
 				array<Byte, 2> ^S = gcnew array<Byte, 2>(SizePanel, SizePanel);		// матрица атттарктора на текущей итерации
 
-				// выполнение для каждого ненулевого элемента аттрактора
+				// выполнение для каждого ненулевого элемента
 				for (int i = 0; i < SizePanel; i++)
 					for (int j = 0; j < SizePanel; j++)
 						if (T[i, j] == 1)
@@ -614,7 +614,7 @@ namespace FractalViewer {
 				delete S;
 			}
 
-			// отрисовка изображения аттрактора
+			// отрисовка изображения
 			for (int i = 0; i < SizePanel; i++)
 			{
 				for (int j = 0; j < SizePanel; j++)
