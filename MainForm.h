@@ -25,9 +25,9 @@ namespace FractalViewer {
 		IFSD,										// Детерминированная СИФ
 		IFSR,										// Рандомизированная СИФ
 		MANDELBROT,									// Фрактал Мандельброта
-		JULIA,										// Фрактал Жулиа
-		LORENZ_ZX,									// Странный аттрактор Лоренца(Z-X плоскость)
-		LORENZ_XY									// Странный аттрактор Лоренца(X-Y плоскость)
+		JULIA										// Фрактал Жулиа
+		//LORENZ_ZX,								// Странный аттрактор Лоренца(Z-X плоскость)
+		//LORENZ_XY									// Странный аттрактор Лоренца(X-Y плоскость)
 	};
 
 	public ref class MainForm : public System::Windows::Forms::Form
@@ -152,6 +152,9 @@ namespace FractalViewer {
 			this->drawToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->clearToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem2 = (gcnew System::Windows::Forms::ToolStripSeparator());
+			this->continuousModeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->inStepModeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->toolStripMenuItem3 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->settingsToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->selectBackgroundColorToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->examplesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -171,9 +174,6 @@ namespace FractalViewer {
 			this->colorDialog1 = (gcnew System::Windows::Forms::ColorDialog());
 			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
-			this->continuousModeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->inStepModeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->toolStripMenuItem3 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -206,7 +206,7 @@ namespace FractalViewer {
 			this->openFileToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"openFileToolStripMenuItem.Image")));
 			this->openFileToolStripMenuItem->Name = L"openFileToolStripMenuItem";
 			this->openFileToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::O));
-			this->openFileToolStripMenuItem->Size = System::Drawing::Size(216, 26);
+			this->openFileToolStripMenuItem->Size = System::Drawing::Size(208, 26);
 			this->openFileToolStripMenuItem->Text = L"Open file";
 			this->openFileToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openFileToolStripMenuItem_Click);
 			// 
@@ -216,14 +216,14 @@ namespace FractalViewer {
 			this->saveToolStripMenuItem->Name = L"saveToolStripMenuItem";
 			this->saveToolStripMenuItem->ShortcutKeyDisplayString = L"Ctrl+S";
 			this->saveToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::S));
-			this->saveToolStripMenuItem->Size = System::Drawing::Size(216, 26);
+			this->saveToolStripMenuItem->Size = System::Drawing::Size(208, 26);
 			this->saveToolStripMenuItem->Text = L"Save to file";
 			this->saveToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::saveToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this->toolStripMenuItem1->Name = L"toolStripMenuItem1";
-			this->toolStripMenuItem1->Size = System::Drawing::Size(213, 6);
+			this->toolStripMenuItem1->Size = System::Drawing::Size(205, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
@@ -231,7 +231,7 @@ namespace FractalViewer {
 			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
 			this->exitToolStripMenuItem->ShortcutKeyDisplayString = L"Ctrl+E";
 			this->exitToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::E));
-			this->exitToolStripMenuItem->Size = System::Drawing::Size(216, 26);
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(208, 26);
 			this->exitToolStripMenuItem->Text = L"Exit";
 			this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::exitToolStripMenuItem_Click);
 			// 
@@ -270,6 +270,27 @@ namespace FractalViewer {
 			// 
 			this->toolStripMenuItem2->Name = L"toolStripMenuItem2";
 			this->toolStripMenuItem2->Size = System::Drawing::Size(242, 6);
+			// 
+			// continuousModeToolStripMenuItem
+			// 
+			this->continuousModeToolStripMenuItem->Checked = true;
+			this->continuousModeToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
+			this->continuousModeToolStripMenuItem->Name = L"continuousModeToolStripMenuItem";
+			this->continuousModeToolStripMenuItem->Size = System::Drawing::Size(245, 26);
+			this->continuousModeToolStripMenuItem->Text = L"Continuous mode";
+			this->continuousModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::continuousModeToolStripMenuItem_Click);
+			// 
+			// inStepModeToolStripMenuItem
+			// 
+			this->inStepModeToolStripMenuItem->Name = L"inStepModeToolStripMenuItem";
+			this->inStepModeToolStripMenuItem->Size = System::Drawing::Size(245, 26);
+			this->inStepModeToolStripMenuItem->Text = L"In step mode";
+			this->inStepModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::inStepModeToolStripMenuItem_Click);
+			// 
+			// toolStripMenuItem3
+			// 
+			this->toolStripMenuItem3->Name = L"toolStripMenuItem3";
+			this->toolStripMenuItem3->Size = System::Drawing::Size(242, 6);
 			// 
 			// settingsToolStripMenuItem
 			// 
@@ -360,6 +381,7 @@ namespace FractalViewer {
 			this->lorenzSystemToolStripMenuItem->Name = L"lorenzSystemToolStripMenuItem";
 			this->lorenzSystemToolStripMenuItem->Size = System::Drawing::Size(237, 26);
 			this->lorenzSystemToolStripMenuItem->Text = L"Lorenz System (Z-X)";
+			this->lorenzSystemToolStripMenuItem->Visible = false;
 			this->lorenzSystemToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::lorenzSystemZXToolStripMenuItem_Click);
 			// 
 			// lorenzSystemXYToolStripMenuItem
@@ -367,6 +389,7 @@ namespace FractalViewer {
 			this->lorenzSystemXYToolStripMenuItem->Name = L"lorenzSystemXYToolStripMenuItem";
 			this->lorenzSystemXYToolStripMenuItem->Size = System::Drawing::Size(237, 26);
 			this->lorenzSystemXYToolStripMenuItem->Text = L"Lorenz System (X-Y)";
+			this->lorenzSystemXYToolStripMenuItem->Visible = false;
 			this->lorenzSystemXYToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::lorenzSystemXYToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
@@ -381,7 +404,7 @@ namespace FractalViewer {
 			this->aboutToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"aboutToolStripMenuItem.Image")));
 			this->aboutToolStripMenuItem->Name = L"aboutToolStripMenuItem";
 			this->aboutToolStripMenuItem->ShortcutKeys = System::Windows::Forms::Keys::F1;
-			this->aboutToolStripMenuItem->Size = System::Drawing::Size(216, 26);
+			this->aboutToolStripMenuItem->Size = System::Drawing::Size(178, 26);
 			this->aboutToolStripMenuItem->Text = L"About Box";
 			this->aboutToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::aboutToolStripMenuItem_Click);
 			// 
@@ -408,27 +431,6 @@ namespace FractalViewer {
 			// 
 			this->openFileDialog1->DefaultExt = L"txt";
 			this->openFileDialog1->Title = L"Open file with fractal set";
-			// 
-			// continuousModeToolStripMenuItem
-			// 
-			this->continuousModeToolStripMenuItem->Checked = true;
-			this->continuousModeToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
-			this->continuousModeToolStripMenuItem->Name = L"continuousModeToolStripMenuItem";
-			this->continuousModeToolStripMenuItem->Size = System::Drawing::Size(245, 26);
-			this->continuousModeToolStripMenuItem->Text = L"Continuous mode";
-			this->continuousModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::continuousModeToolStripMenuItem_Click);
-			// 
-			// inStepModeToolStripMenuItem
-			// 
-			this->inStepModeToolStripMenuItem->Name = L"inStepModeToolStripMenuItem";
-			this->inStepModeToolStripMenuItem->Size = System::Drawing::Size(245, 26);
-			this->inStepModeToolStripMenuItem->Text = L"In step mode";
-			this->inStepModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::inStepModeToolStripMenuItem_Click);
-			// 
-			// toolStripMenuItem3
-			// 
-			this->toolStripMenuItem3->Name = L"toolStripMenuItem3";
-			this->toolStripMenuItem3->Size = System::Drawing::Size(242, 6);
 			// 
 			// MainForm
 			// 
@@ -754,8 +756,7 @@ namespace FractalViewer {
 		}
 	}
 
-	// Процедура вычисления и отрисовки странного аттрактора Лоренца
-	// Часть исходного кода функции взят с сайта  wikipedia.org
+	/*// Процедура вычисления и отрисовки странного аттрактора Лоренца
 	private: System::Void DrawLorenzAttractor(int plane)
 	{
 		type = ((plane == 0) ? LORENZ_ZX : LORENZ_XY);
@@ -782,7 +783,7 @@ namespace FractalViewer {
 			if (iters % 250 == 0)
 				G->DrawImage(Bmp, 0, 0);
 		} while (--iters);
-	}
+	}*/
 
 	// Пункт меню для начала отрисовки выбранного фрактала
 	private: System::Void drawToolStripMenuItem_Click(
@@ -811,13 +812,13 @@ namespace FractalViewer {
 			case JULIA:
 				this->DrawJuliaMandelbrot(0);
 				break;
-			case LORENZ_ZX:
+			/*case LORENZ_ZX:
 				this->ClearPanel();
 				this->DrawLorenzAttractor(0);
 				break;
 			case LORENZ_XY:
 				this->ClearPanel();
-				this->DrawLorenzAttractor(1);
+				this->DrawLorenzAttractor(1);*/
 		}
 	}
 
@@ -992,18 +993,18 @@ namespace FractalViewer {
 	private: System::Void lorenzSystemZXToolStripMenuItem_Click(
 		System::Object^  sender, System::EventArgs^  e)
 	{
-		this->ClearPanel();
-		type = LORENZ_ZX;
-		this->DrawLorenzAttractor(0);
+		//this->ClearPanel();
+		//type = LORENZ_ZX;
+		//this->DrawLorenzAttractor(0);
 	}
 	
 	// Пример странного аттрактора Лоренца (X-Y плоскость)
 	private: System::Void lorenzSystemXYToolStripMenuItem_Click(
 		System::Object^  sender, System::EventArgs^  e)
 	{
-		this->ClearPanel();
-		type = LORENZ_XY;
-		this->DrawLorenzAttractor(1);
+		//this->ClearPanel();
+		//type = LORENZ_XY;
+		//this->DrawLorenzAttractor(1);
 	}
 
 	// Сохранение полученного рисунка
