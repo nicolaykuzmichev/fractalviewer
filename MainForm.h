@@ -595,7 +595,7 @@ namespace FractalViewer {
 
 			for (int k = 0; k < NumIters; k++)
 			{
-				array<Byte, 2> ^S = gcnew array<Byte, 2>(SizePanel, SizePanel);		// матрица атттарктора на текущей итерации
+				array<Byte, 2> ^SM = gcnew array<Byte, 2>(SizePanel, SizePanel);		// матрица атттарктора на текущей итерации
 
 				// выполнение для каждого ненулевого элемента
 				for (int i = 0; i < SizePanel; i++)
@@ -604,7 +604,7 @@ namespace FractalViewer {
 							for (int Affine = 0; Affine < NumAffine; Affine++)
 							{
 								// перевод из "экранной" системы координат в "мировую"
-								PointD W;
+								PointD W(0, 0);
 								ToWorld(Point(i, j), W);
 
 								// применение афинных преобразаований к точке
@@ -612,15 +612,15 @@ namespace FractalViewer {
 								double Y = C[Affine, 2] * W.X + C[Affine, 3] * W.Y + C[Affine, 5];
 
 								// перевод из "мировой" системы координат в "экранную"
-								Point Sn;
-								ToScreen(PointD(X, Y), Sn);
+								Point S(0, 0);
+								ToScreen(PointD(X, Y), S);
 
 								// сохранение измененных координат точки, если она входит в область отрисовки
-								if ((Sn.X >= 0) && (Sn.X < SizePanel) && (Sn.Y >= 0) && (Sn.Y < SizePanel))
-									S[Sn.X, Sn.Y] = 1;
+								if ((S.X >= 0) && (S.X < SizePanel) && (S.Y >= 0) && (S.Y < SizePanel))
+									SM[S.X, S.Y] = 1;
 							}
-				T = S;
-				delete S;
+				T = SM;
+				delete SM;
 			}
 
 			// отрисовка изображения
@@ -646,7 +646,7 @@ namespace FractalViewer {
 	// Процедура вычисления и отрисовки фрактала рандомизированной СИФ(только ковер Серпинского - альфа версия алгоритма)
 	private: System::Void DrawIFSR(Void)
 	{
-		Xmin = -0.2; Ymin = -1.0; Xmax = 2; Ymax = 1;
+		Xmin = -0.2; Ymin = -1; Xmax = 2; Ymax = 1;
 
 		int NumIters = 100000;		// число итераций (больше - четче изображение)
 		int ItersForPrint = 100;	// через какое число итераций выводить получившееся изображение
@@ -916,7 +916,7 @@ namespace FractalViewer {
 		// Ковер Серпинского
 		C[0, 0] = 0.5;		C[0, 1] = 0;		C[0, 2] = 0;		C[0, 3] = 0.5;		C[0, 4] = 0;		C[0, 5] = 0;
 		C[1, 0] = 0.5;		C[1, 1] = 0;		C[1, 2] = 0;		C[1, 3] = 0.5;		C[1, 4] = 0.5;		C[1, 5] = 0;
-		C[2, 0] = 0.5;		C[2, 1] = 0;		C[2, 2] = 0;		C[2, 3] = 0.5;		C[2, 4] = 0.25;		C[2, 5] = 0.5;
+		C[2, 0] = 0.5;		C[2, 1] = 0;		C[2, 2] = 0;		C[2, 3] = 0.5;		C[2, 4] = 0.25;		C[2, 5] = 0.43301;
 
 		this->DrawIFSD(NumIters, NumAffine, C, E0, SizePanel);
 	}
