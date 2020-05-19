@@ -657,6 +657,26 @@ namespace FractalViewer {
 		C[1, 0] = 0.5;		C[1, 1] = 0;	C[1, 2] = 0;	C[1, 3] = 0.5;		C[1, 4] = 0.5;		C[1, 5] = 0;
 		C[2, 0] = 0.5;		C[2, 1] = 0;	C[2, 2] = 0;	C[2, 3] = 0.5;		C[2, 4] = 0.25;		C[2, 5] = 0.43301;
 
+		// цикл доводки произвольной точки
+		for (int i = 0; i < 100; i++)
+		{
+			int Affine = Rand->Next(0, NumAffine);
+
+			X = C[Affine, 0] * X0
+				+ C[Affine, 1] * Y0
+				+ C[Affine, 4]
+				+ A[Affine, 0];
+
+			Y = C[Affine, 2] * X0
+				+ C[Affine, 3] * Y0
+				+ C[Affine, 5]
+				+ A[Affine, 1];
+
+			X0 = X;
+			Y0 = Y;
+		}
+
+		// основной цикл вычисления и отрисовки фрактала IFSR
 		for (int i = 0; i < NumIters; i++)
 		{
 			// "Игра в Хаос"
