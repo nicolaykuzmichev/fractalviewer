@@ -706,7 +706,7 @@ namespace FractalViewer {
 	}
 
 	// Процедура вычисления и отрисовки фрактала Жулиа(0) и Мандельброта(1)
-	private: System::Void DrawJuliaMandelbrot(Byte typeF)
+	private: System::Void DrawJulia(Void)
 	{
 		Xmin = -2; Ymin = -2; Xmax = 2; Ymax = 2;
 
@@ -718,11 +718,60 @@ namespace FractalViewer {
 			{
 				for (int j = 0; j < panel1->Height; j++)
 				{
-					PointD W(0, 0), C(-0.22, -0.74), WT;
-					if (typeF == 0)
-						ToWorld(Point(i, j), W);
-					else
-						ToWorld(Point(i, j), C);
+					PointD W, C(-0.22, -0.74), WT;
+					ToWorld(Point(i, j), W);
+
+					for (int k = 0; k < NumIters; k++)
+					{
+						// преобразование точек
+						WT.X = W.X * W.X - W.Y * W.Y + C.X;
+						WT.Y = 2 * W.X * W.Y + C.Y;
+
+						// выделение точек, не принадлежащих множеству
+						if (WT.X * WT.X + WT.Y * WT.Y > 4)
+						{
+							Bmp->SetPixel(i, j, B->Color);
+							break;
+						}
+
+						W.X = WT.X;
+						W.Y = WT.Y;
+					}
+
+					// выделение точек, принадлежащих множеству
+					if (WT.X * WT.X + WT.Y * WT.Y < 4)
+						Bmp->SetPixel(i, j, P->Color);
+				}
+
+				//отрисовка изображения
+				if ((inStepModeToolStripMenuItem->Checked) && (i % 3 == 0))
+					G->DrawImage(Bmp, 0, 0);
+			}
+
+			if (continuousModeToolStripMenuItem->Checked)
+			{
+				G->DrawImage(Bmp, 0, 0);
+				NumIters++;
+			}
+		}
+
+		Xmin = -0.1; Ymin = -0.7; Xmax = 1.1; Ymax = 0.7;
+	}
+	
+	private: System::Void DrawMandelbrot(Void)
+	{
+		Xmin = -2; Ymin = -2; Xmax = 2; Ymax = 2;
+
+		int iter = (inStepModeToolStripMenuItem->Checked) ? 1 : 100;
+
+		while (iter--)
+		{
+			for (int i = 0; i < panel1->Width; i++)
+			{
+				for (int j = 0; j < panel1->Height; j++)
+				{
+					PointD W(0, 0), C, WT;
+					ToWorld(Point(i, j), C);
 
 					for (int k = 0; k < NumIters; k++)
 					{
@@ -812,10 +861,10 @@ namespace FractalViewer {
 				this->DrawIFSR();
 				break;
 			case MANDELBROT: 
-				this->DrawJuliaMandelbrot(1);
+				this->DrawMandelbrot();
 				break;
 			case JULIA:
-				this->DrawJuliaMandelbrot(0);
+				this->DrawJulia();
 				break;
 			/*case LORENZ_ZX:
 				this->ClearPanel();
@@ -981,7 +1030,7 @@ namespace FractalViewer {
 		this->ClearPanel();
 		type = MANDELBROT;
 		NumIters = 1;		// Число итераций
-		this->DrawJuliaMandelbrot(1);
+		this->DrawMandelbrot();
 	}
 
 	// Пример фрактала Жулиа
@@ -991,7 +1040,7 @@ namespace FractalViewer {
 		this->ClearPanel();
 		type = JULIA;
 		NumIters = 1;		// Число итераций
-		this->DrawJuliaMandelbrot(0);
+		this->DrawJulia();
 	}
 
 	// Пример странного аттрактора Лоренца (Z-X плоскость)
