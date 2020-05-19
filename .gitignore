@@ -3,3 +3,7 @@
 ################################################################################
 
 /.vs/FractalViewer/v15/Browse.VC.opendb
+/Debug
+/Release
+/.vs/FractalViewer/v15/ipch/AutoPCH
+/.vs/FractalViewer/v15/.suo

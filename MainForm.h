@@ -90,7 +90,8 @@ namespace FractalViewer {
 
 			InitializeComponent();
 
-			Xmin = -2; Ymin = -2; Xmax = 2; Ymax = 2;
+			//Xmin = -2; Ymin = -2; Xmax = 2; Ymax = 2;
+			Xmin = -0.1; Ymin = -0.7; Xmax = 1.1; Ymax = 0.7;
 
 			G = panel1->CreateGraphics();						
 			P = gcnew Pen(Color::Orange);							
@@ -707,7 +708,9 @@ namespace FractalViewer {
 	// Процедура вычисления и отрисовки фрактала Жулиа(0) и Мандельброта(1)
 	private: System::Void DrawJuliaMandelbrot(Byte typeF)
 	{
-		int iter = (inStepModeToolStripMenuItem->Checked)? 1 : 50;
+		Xmin = -2; Ymin = -2; Xmax = 2; Ymax = 2;
+
+		int iter = (inStepModeToolStripMenuItem->Checked)? 1 : 100;
 
 		while (iter--)
 		{
@@ -754,6 +757,8 @@ namespace FractalViewer {
 				NumIters++;
 			}
 		}
+
+		Xmin = -0.1; Ymin = -0.7; Xmax = 1.1; Ymax = 0.7;
 	}
 
 	/*// Процедура вычисления и отрисовки странного аттрактора Лоренца
