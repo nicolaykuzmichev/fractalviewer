@@ -833,13 +833,10 @@ namespace FractalViewer {
 		
 		E0 = gcnew array<Byte, 2>(SizePanel, SizePanel);		// начальное множество E0
 
-		// начальное множество - треугольник
+		// начальное множество - квадрат
 		for (int i = 0; i < SizePanel; i++)
-			for (int g = i / 2, h = SizePanel / 2; g < SizePanel / 2, h < SizePanel - i / 2; g++, h++)
-			{
-				E0[g, i] = 1;
-				E0[h, i] = 1;
-			}
+			for (int h = 0; h < SizePanel; h++)
+				E0[i, h] = 1;
 
 		C = gcnew array<Double, 2>(NumAffine, 6);				// матрица коэффициентов преобразований
 
@@ -875,13 +872,11 @@ namespace FractalViewer {
 		
 		E0 = gcnew array<Byte, 2>(SizePanel, SizePanel);			// начальное множество E0
 
-		// начальное множество - треугольник
+		// начальное множество - квадрат
 		for (int i = 0; i < SizePanel; i++)
-			for (int g = i / 2, h = SizePanel / 2; g < SizePanel / 2, h < SizePanel - i / 2; g++, h++)
-			{
-				E0[g, i] = 1;
-				E0[h, i] = 1;
-			}
+			for (int h = 0; h < SizePanel; h++)
+				E0[i, h] = 1;
+
 		C = gcnew array<Double, 2>(NumAffine, 6);					// матрица коэффициентов преобразований
 
 		// Папоротник
@@ -908,13 +903,10 @@ namespace FractalViewer {
 
 		E0 = gcnew array<Byte, 2>(SizePanel, SizePanel);		// начальное множество E0
 
-		// начальное множество - треугольник
+		// начальное множество - квадрат
 		for (int i = 0; i < SizePanel; i++)
-			for (int g = i / 2, h = SizePanel / 2; g < SizePanel / 2, h < SizePanel - i / 2; g++, h++)
-			{
-				E0[g, i] = 1;
-				E0[h, i] = 1;
-			}
+			for (int h = 0; h < SizePanel; h++)
+				E0[i, h] = 1;
 
 		C = gcnew array<Double, 2>(NumAffine, 6);				// матрица коэффициентов преобразований
 
@@ -940,13 +932,10 @@ namespace FractalViewer {
 		
 		E0 = gcnew array<Byte, 2>(SizePanel, SizePanel);		// начальное множество E0
 
-		// начальное множество - треугольник
+		// начальное множество - квадрат
 		for (int i = 0; i < SizePanel; i++)
-			for (int g = i / 2, h = SizePanel / 2; g < SizePanel / 2, h < SizePanel - i / 2; g++, h++)
-			{
-				E0[g, i] = 1;
-				E0[h, i] = 1;
-			}
+			for (int h = 0; h < SizePanel; h++)
+				E0[i, h] = 1;
 
 		C = gcnew array<Double, 2>(NumAffine, 6);				// матрица коэффициентов преобразований
 
