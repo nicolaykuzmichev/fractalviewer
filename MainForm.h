@@ -603,13 +603,21 @@ namespace FractalViewer {
 						if (T[i, j] == 1)
 							for (int Affine = 0; Affine < NumAffine; Affine++)
 							{
+								// перевод из "экранной" системы координат в "мировую"
+								PointD W;
+								ToWorld(Point(i, j), W);
+
 								// применение афинных преобразаований к точке
-								int X = C[Affine, 0] * i + C[Affine, 1] * j + C[Affine, 4] * SizePanel;
-								int Y = C[Affine, 2] * i + C[Affine, 3] * j + C[Affine, 5] * SizePanel;
+								double X = C[Affine, 0] * W.X + C[Affine, 1] * W.Y + C[Affine, 4];
+								double Y = C[Affine, 2] * W.X + C[Affine, 3] * W.Y + C[Affine, 5];
+
+								// перевод из "мировой" системы координат в "экранную"
+								Point Sn;
+								ToScreen(PointD(X, Y), Sn);
 
 								// сохранение измененных координат точки, если она входит в область отрисовки
-								if ((X >= 0) && (X < SizePanel) && (Y >= 0) && (Y < SizePanel))
-									S[X, Y] = 1;
+								if ((Sn.X >= 0) && (Sn.X < SizePanel) && (Sn.Y >= 0) && (Sn.Y < SizePanel))
+									S[Sn.X, Sn.Y] = 1;
 							}
 				T = S;
 				delete S;
@@ -620,9 +628,9 @@ namespace FractalViewer {
 			{
 				for (int j = 0; j < SizePanel; j++)
 					if (T[i, j] == 1)
-						Bmp->SetPixel(i, SizePanel - j, P->Color);
+						Bmp->SetPixel(i, j, P->Color);
 					else
-						Bmp->SetPixel(i, SizePanel - j, B->Color);
+						Bmp->SetPixel(i, j, B->Color);
 				if ((inStepModeToolStripMenuItem->Checked) && (i % 3 == 0))
 					G->DrawImage(Bmp, 0, 0);
 			}
@@ -638,20 +646,15 @@ namespace FractalViewer {
 	// Процедура вычисления и отрисовки фрактала рандомизированной СИФ(только ковер Серпинского - альфа версия алгоритма)
 	private: System::Void DrawIFSR(Void)
 	{
+		Xmin = -0.2; Ymin = -1.0; Xmax = 2; Ymax = 1;
+
 		int NumIters = 100000;		// число итераций (больше - четче изображение)
 		int ItersForPrint = 100;	// через какое число итераций выводить получившееся изображение
 		int NumAffine = 3;			// число преобразований и аттракторов
-		int X0 = 0, Y0 = 0;			// координаты начальной точки
-		int X = 0, Y = 0;			// координаты текущей точки
+		double X0 = 0, Y0 = 0;		// координаты начальной точки
+		double X = 0, Y = 0;		// координаты текущей точки
 
 		System::Random^ Rand = gcnew System::Random();					// экземпляр класса Random для получения равномерной последовательности случайных чисел
-
-		array<Double, 2> ^A = gcnew array<Double, 2>(NumAffine, 2);		// матрица координат аттракторов
-
-		// Вершины треугольника
-		A[0, 0] = 150;	A[0, 1] = 150;
-		A[1, 0] = 75;	A[1, 1] = 0;
-		A[2, 0] = 0;	A[2, 1] = 150;
 
 		array<Double, 2> ^C = gcnew array<Double, 2>(NumAffine, 6);		// матрица коэффициентов преобразований
 
@@ -660,20 +663,17 @@ namespace FractalViewer {
 		C[1, 0] = 0.5;		C[1, 1] = 0;	C[1, 2] = 0;	C[1, 3] = 0.5;		C[1, 4] = 0.5;		C[1, 5] = 0;
 		C[2, 0] = 0.5;		C[2, 1] = 0;	C[2, 2] = 0;	C[2, 3] = 0.5;		C[2, 4] = 0.25;		C[2, 5] = 0.43301;
 
-		// цикл доводки произвольной точки
+		/*// Лист
+		C[0, 0] = 0.4;		C[0, 1] = -0.373;	C[0, 2] = 0.06;		C[0, 3] = 0.6;		C[0, 4] = 0.353;	C[0, 5] = 0;
+		C[1, 0] = -0.8;		C[1, 1] = 0.186;	C[1, 2] = 0.137;	C[1, 3] = 0.8;		C[1, 4] = 1.1;		C[1, 5] = 0.1;*/
+
+		// цикл "доводки" произвольной точки
 		for (int i = 0; i < 100; i++)
 		{
 			int Affine = Rand->Next(0, NumAffine);
 
-			X = C[Affine, 0] * X0
-				+ C[Affine, 1] * Y0
-				+ C[Affine, 4]
-				+ A[Affine, 0];
-
-			Y = C[Affine, 2] * X0
-				+ C[Affine, 3] * Y0
-				+ C[Affine, 5]
-				+ A[Affine, 1];
+			X = C[Affine, 0] * X0 + C[Affine, 1] * Y0 + C[Affine, 4];
+			Y = C[Affine, 2] * X0 + C[Affine, 3] * Y0 + C[Affine, 5];
 
 			X0 = X;
 			Y0 = Y;
@@ -682,27 +682,25 @@ namespace FractalViewer {
 		// основной цикл вычисления и отрисовки фрактала IFSR
 		for (int i = 0; i < NumIters; i++)
 		{
-			// "Игра в Хаос"
 			int Affine = Rand->Next(0, NumAffine);
 			
-			X = C[Affine, 0] * X0
-					+ C[Affine, 1] * Y0
-					+ C[Affine, 4]
-					+ A[Affine, 0];
-
-			Y = C[Affine, 2] * X0
-					+ C[Affine, 3] * Y0
-					+ C[Affine, 5]
-					+ A[Affine, 1];
+			X = C[Affine, 0] * X0 + C[Affine, 1] * Y0 + C[Affine, 4];
+			Y = C[Affine, 2] * X0 + C[Affine, 3] * Y0 + C[Affine, 5];
 
 			X0 = X;
 			Y0 = Y;
 
+			Point S;
+			ToScreen(PointD(X, Y), S);
+
 			// отрисовка изображения каждые ItersForPrint раз
-			Bmp->SetPixel(X, Y, P->Color);
-			if (i % ItersForPrint == 0)
-				G->DrawImage(Bmp, 100, 100);
+			if ((S.X >= 0) && (S.X < SizePanel) && (S.Y >= 0) && (S.Y < SizePanel))
+				Bmp->SetPixel(S.X, S.Y, P->Color);
+				if (i % ItersForPrint == 0)
+					G->DrawImage(Bmp, 100, 100);
 		}
+
+		Xmin = -0.1; Ymin = -0.7; Xmax = 1.1; Ymax = 0.7;
 	}
 
 	// Процедура вычисления и отрисовки фрактала Жулиа(0) и Мандельброта(1)
