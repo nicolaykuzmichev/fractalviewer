@@ -589,6 +589,8 @@ namespace FractalViewer {
 	{
 		int iter = (inStepModeToolStripMenuItem->Checked) ? 1 : 20;
 
+		Xmin = 0; Ymin = 0; Xmax = 1; Ymax = 1;
+
 		while(iter--)
 		{
 			array<Byte, 2> ^T = E0;			// матрица аттрактора
@@ -641,6 +643,8 @@ namespace FractalViewer {
 				NumIters++;
 			}
 		}
+
+		Xmin = -0.1; Ymin = -0.7; Xmax = 1.1; Ymax = 0.7;
 	}
 
 	// Процедура вычисления и отрисовки фрактала рандомизированной СИФ(только ковер Серпинского - альфа версия алгоритма)
