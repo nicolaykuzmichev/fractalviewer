@@ -25,9 +25,9 @@ namespace FractalViewer {
 		IFSD,										// Детерминированная СИФ
 		IFSR,										// Рандомизированная СИФ
 		MANDELBROT,									// Фрактал Мандельброта
-		JULIA,										// Фрактал Жулиа
-		LORENZ_ZX,									// Странный аттрактор Лоренца(Z-X плоскость)
-		LORENZ_XY									// Странный аттрактор Лоренца(X-Y плоскость)
+		JULIA										// Фрактал Жулиа
+		//LORENZ_ZX,								// Странный аттрактор Лоренца(Z-X плоскость)
+		//LORENZ_XY									// Странный аттрактор Лоренца(X-Y плоскость)
 	};
 
 	public ref class MainForm : public System::Windows::Forms::Form
@@ -90,7 +90,8 @@ namespace FractalViewer {
 
 			InitializeComponent();
 
-			Xmin = -2; Ymin = -2; Xmax = 2; Ymax = 2;
+			//Xmin = -2; Ymin = -2; Xmax = 2; Ymax = 2;
+			Xmin = -0.1; Ymin = -0.7; Xmax = 1.1; Ymax = 0.7;
 
 			G = panel1->CreateGraphics();						
 			P = gcnew Pen(Color::Orange);							
@@ -152,6 +153,9 @@ namespace FractalViewer {
 			this->drawToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->clearToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripMenuItem2 = (gcnew System::Windows::Forms::ToolStripSeparator());
+			this->continuousModeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->inStepModeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->toolStripMenuItem3 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->settingsToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->selectBackgroundColorToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->examplesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -171,9 +175,6 @@ namespace FractalViewer {
 			this->colorDialog1 = (gcnew System::Windows::Forms::ColorDialog());
 			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
-			this->continuousModeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->inStepModeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->toolStripMenuItem3 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -206,7 +207,7 @@ namespace FractalViewer {
 			this->openFileToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"openFileToolStripMenuItem.Image")));
 			this->openFileToolStripMenuItem->Name = L"openFileToolStripMenuItem";
 			this->openFileToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::O));
-			this->openFileToolStripMenuItem->Size = System::Drawing::Size(216, 26);
+			this->openFileToolStripMenuItem->Size = System::Drawing::Size(208, 26);
 			this->openFileToolStripMenuItem->Text = L"Open file";
 			this->openFileToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openFileToolStripMenuItem_Click);
 			// 
@@ -216,14 +217,14 @@ namespace FractalViewer {
 			this->saveToolStripMenuItem->Name = L"saveToolStripMenuItem";
 			this->saveToolStripMenuItem->ShortcutKeyDisplayString = L"Ctrl+S";
 			this->saveToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::S));
-			this->saveToolStripMenuItem->Size = System::Drawing::Size(216, 26);
+			this->saveToolStripMenuItem->Size = System::Drawing::Size(208, 26);
 			this->saveToolStripMenuItem->Text = L"Save to file";
 			this->saveToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::saveToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this->toolStripMenuItem1->Name = L"toolStripMenuItem1";
-			this->toolStripMenuItem1->Size = System::Drawing::Size(213, 6);
+			this->toolStripMenuItem1->Size = System::Drawing::Size(205, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
@@ -231,7 +232,7 @@ namespace FractalViewer {
 			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
 			this->exitToolStripMenuItem->ShortcutKeyDisplayString = L"Ctrl+E";
 			this->exitToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::E));
-			this->exitToolStripMenuItem->Size = System::Drawing::Size(216, 26);
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(208, 26);
 			this->exitToolStripMenuItem->Text = L"Exit";
 			this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::exitToolStripMenuItem_Click);
 			// 
@@ -270,6 +271,27 @@ namespace FractalViewer {
 			// 
 			this->toolStripMenuItem2->Name = L"toolStripMenuItem2";
 			this->toolStripMenuItem2->Size = System::Drawing::Size(242, 6);
+			// 
+			// continuousModeToolStripMenuItem
+			// 
+			this->continuousModeToolStripMenuItem->Checked = true;
+			this->continuousModeToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
+			this->continuousModeToolStripMenuItem->Name = L"continuousModeToolStripMenuItem";
+			this->continuousModeToolStripMenuItem->Size = System::Drawing::Size(245, 26);
+			this->continuousModeToolStripMenuItem->Text = L"Continuous mode";
+			this->continuousModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::continuousModeToolStripMenuItem_Click);
+			// 
+			// inStepModeToolStripMenuItem
+			// 
+			this->inStepModeToolStripMenuItem->Name = L"inStepModeToolStripMenuItem";
+			this->inStepModeToolStripMenuItem->Size = System::Drawing::Size(245, 26);
+			this->inStepModeToolStripMenuItem->Text = L"In step mode";
+			this->inStepModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::inStepModeToolStripMenuItem_Click);
+			// 
+			// toolStripMenuItem3
+			// 
+			this->toolStripMenuItem3->Name = L"toolStripMenuItem3";
+			this->toolStripMenuItem3->Size = System::Drawing::Size(242, 6);
 			// 
 			// settingsToolStripMenuItem
 			// 
@@ -360,6 +382,7 @@ namespace FractalViewer {
 			this->lorenzSystemToolStripMenuItem->Name = L"lorenzSystemToolStripMenuItem";
 			this->lorenzSystemToolStripMenuItem->Size = System::Drawing::Size(237, 26);
 			this->lorenzSystemToolStripMenuItem->Text = L"Lorenz System (Z-X)";
+			this->lorenzSystemToolStripMenuItem->Visible = false;
 			this->lorenzSystemToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::lorenzSystemZXToolStripMenuItem_Click);
 			// 
 			// lorenzSystemXYToolStripMenuItem
@@ -367,6 +390,7 @@ namespace FractalViewer {
 			this->lorenzSystemXYToolStripMenuItem->Name = L"lorenzSystemXYToolStripMenuItem";
 			this->lorenzSystemXYToolStripMenuItem->Size = System::Drawing::Size(237, 26);
 			this->lorenzSystemXYToolStripMenuItem->Text = L"Lorenz System (X-Y)";
+			this->lorenzSystemXYToolStripMenuItem->Visible = false;
 			this->lorenzSystemXYToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::lorenzSystemXYToolStripMenuItem_Click);
 			// 
 			// helpToolStripMenuItem
@@ -381,7 +405,7 @@ namespace FractalViewer {
 			this->aboutToolStripMenuItem->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"aboutToolStripMenuItem.Image")));
 			this->aboutToolStripMenuItem->Name = L"aboutToolStripMenuItem";
 			this->aboutToolStripMenuItem->ShortcutKeys = System::Windows::Forms::Keys::F1;
-			this->aboutToolStripMenuItem->Size = System::Drawing::Size(216, 26);
+			this->aboutToolStripMenuItem->Size = System::Drawing::Size(178, 26);
 			this->aboutToolStripMenuItem->Text = L"About Box";
 			this->aboutToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::aboutToolStripMenuItem_Click);
 			// 
@@ -408,27 +432,6 @@ namespace FractalViewer {
 			// 
 			this->openFileDialog1->DefaultExt = L"txt";
 			this->openFileDialog1->Title = L"Open file with fractal set";
-			// 
-			// continuousModeToolStripMenuItem
-			// 
-			this->continuousModeToolStripMenuItem->Checked = true;
-			this->continuousModeToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
-			this->continuousModeToolStripMenuItem->Name = L"continuousModeToolStripMenuItem";
-			this->continuousModeToolStripMenuItem->Size = System::Drawing::Size(245, 26);
-			this->continuousModeToolStripMenuItem->Text = L"Continuous mode";
-			this->continuousModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::continuousModeToolStripMenuItem_Click);
-			// 
-			// inStepModeToolStripMenuItem
-			// 
-			this->inStepModeToolStripMenuItem->Name = L"inStepModeToolStripMenuItem";
-			this->inStepModeToolStripMenuItem->Size = System::Drawing::Size(245, 26);
-			this->inStepModeToolStripMenuItem->Text = L"In step mode";
-			this->inStepModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::inStepModeToolStripMenuItem_Click);
-			// 
-			// toolStripMenuItem3
-			// 
-			this->toolStripMenuItem3->Name = L"toolStripMenuItem3";
-			this->toolStripMenuItem3->Size = System::Drawing::Size(242, 6);
 			// 
 			// MainForm
 			// 
@@ -525,8 +528,8 @@ namespace FractalViewer {
 	// Загрузка базы и паттерна конструктивного фрактала ("по умолчанию")
 	private: System::Void DefaultBaseAndPattern(Void)
 	{
-		OriginBase->Add(PointD(-1.5, 0));
-		OriginBase->Add(PointD(1.5, 0));
+		OriginBase->Add(PointD(0, 0));
+		OriginBase->Add(PointD(1, 0));
 
 		OriginPattern->Add(PointD(0, 0));
 		OriginPattern->Add(PointD(0.25, 0));
@@ -586,40 +589,50 @@ namespace FractalViewer {
 	{
 		int iter = (inStepModeToolStripMenuItem->Checked) ? 1 : 20;
 
+		Xmin = 0; Ymin = 0; Xmax = 1; Ymax = 1;
+
 		while(iter--)
 		{
 			array<Byte, 2> ^T = E0;			// матрица аттрактора
 
 			for (int k = 0; k < NumIters; k++)
 			{
-				array<Byte, 2> ^S = gcnew array<Byte, 2>(SizePanel, SizePanel);		// матрица атттарктора на текущей итерации
+				array<Byte, 2> ^SM = gcnew array<Byte, 2>(SizePanel, SizePanel);		// матрица атттарктора на текущей итерации
 
-				// выполнение для каждого ненулевого элемента аттрактора
+				// выполнение для каждого ненулевого элемента
 				for (int i = 0; i < SizePanel; i++)
 					for (int j = 0; j < SizePanel; j++)
 						if (T[i, j] == 1)
 							for (int Affine = 0; Affine < NumAffine; Affine++)
 							{
+								// перевод из "экранной" системы координат в "мировую"
+								PointD W(0, 0);
+								ToWorld(Point(i, j), W);
+
 								// применение афинных преобразаований к точке
-								int X = C[Affine, 0] * i + C[Affine, 1] * j + C[Affine, 4] * SizePanel;
-								int Y = C[Affine, 2] * i + C[Affine, 3] * j + C[Affine, 5] * SizePanel;
+								double X = C[Affine, 0] * W.X + C[Affine, 1] * W.Y + C[Affine, 4];
+								double Y = C[Affine, 2] * W.X + C[Affine, 3] * W.Y + C[Affine, 5];
+
+								// перевод из "мировой" системы координат в "экранную"
+								Point S(0, 0);
+								ToScreen(PointD(X, Y), S);
 
 								// сохранение измененных координат точки, если она входит в область отрисовки
-								if ((X >= 0) && (X < SizePanel) && (Y >= 0) && (Y < SizePanel))
-									S[X, Y] = 1;
+								if ((S.X >= 0) && (S.X < SizePanel) && (S.Y >= 0) && (S.Y < SizePanel))
+									SM[S.X, S.Y] = 1;
 							}
-				T = S;
-				delete S;
+				T = SM;
+				delete SM;
 			}
 
-			// отрисовка изображения аттрактора
+			// отрисовка изображения
 			for (int i = 0; i < SizePanel; i++)
 			{
 				for (int j = 0; j < SizePanel; j++)
 					if (T[i, j] == 1)
-						Bmp->SetPixel(i, SizePanel - j, P->Color);
+						Bmp->SetPixel(i, j, P->Color);
 					else
-						Bmp->SetPixel(i, SizePanel - j, B->Color);
+						Bmp->SetPixel(i, j, B->Color);
 				if ((inStepModeToolStripMenuItem->Checked) && (i % 3 == 0))
 					G->DrawImage(Bmp, 0, 0);
 			}
@@ -630,25 +643,22 @@ namespace FractalViewer {
 				NumIters++;
 			}
 		}
+
+		Xmin = -0.1; Ymin = -0.7; Xmax = 1.1; Ymax = 0.7;
 	}
 
 	// Процедура вычисления и отрисовки фрактала рандомизированной СИФ(только ковер Серпинского - альфа версия алгоритма)
 	private: System::Void DrawIFSR(Void)
 	{
+		Xmin = -0.2; Ymin = -1; Xmax = 2; Ymax = 1;
+
 		int NumIters = 100000;		// число итераций (больше - четче изображение)
 		int ItersForPrint = 100;	// через какое число итераций выводить получившееся изображение
 		int NumAffine = 3;			// число преобразований и аттракторов
-		int X0 = 0, Y0 = 0;			// координаты начальной точки
-		int X = 0, Y = 0;			// координаты текущей точки
+		double X0 = 0, Y0 = 0;		// координаты начальной точки
+		double X = 0, Y = 0;		// координаты текущей точки
 
 		System::Random^ Rand = gcnew System::Random();					// экземпляр класса Random для получения равномерной последовательности случайных чисел
-
-		array<Double, 2> ^A = gcnew array<Double, 2>(NumAffine, 2);		// матрица координат аттракторов
-
-		// Вершины треугольника
-		A[0, 0] = 150;	A[0, 1] = 150;
-		A[1, 0] = 75;	A[1, 1] = 0;
-		A[2, 0] = 0;	A[2, 1] = 150;
 
 		array<Double, 2> ^C = gcnew array<Double, 2>(NumAffine, 6);		// матрица коэффициентов преобразований
 
@@ -657,35 +667,52 @@ namespace FractalViewer {
 		C[1, 0] = 0.5;		C[1, 1] = 0;	C[1, 2] = 0;	C[1, 3] = 0.5;		C[1, 4] = 0.5;		C[1, 5] = 0;
 		C[2, 0] = 0.5;		C[2, 1] = 0;	C[2, 2] = 0;	C[2, 3] = 0.5;		C[2, 4] = 0.25;		C[2, 5] = 0.43301;
 
+		/*// Лист
+		C[0, 0] = 0.4;		C[0, 1] = -0.373;	C[0, 2] = 0.06;		C[0, 3] = 0.6;		C[0, 4] = 0.353;	C[0, 5] = 0;
+		C[1, 0] = -0.8;		C[1, 1] = 0.186;	C[1, 2] = 0.137;	C[1, 3] = 0.8;		C[1, 4] = 1.1;		C[1, 5] = 0.1;*/
+
+		// цикл "доводки" произвольной точки
+		for (int i = 0; i < 100; i++)
+		{
+			int Affine = Rand->Next(0, NumAffine);
+
+			X = C[Affine, 0] * X0 + C[Affine, 1] * Y0 + C[Affine, 4];
+			Y = C[Affine, 2] * X0 + C[Affine, 3] * Y0 + C[Affine, 5];
+
+			X0 = X;
+			Y0 = Y;
+		}
+
+		// основной цикл вычисления и отрисовки фрактала IFSR
 		for (int i = 0; i < NumIters; i++)
 		{
-			// "Игра в Хаос"
 			int Affine = Rand->Next(0, NumAffine);
 			
-			X = C[Affine, 0] * X0
-					+ C[Affine, 1] * Y0
-					+ C[Affine, 4]
-					+ A[Affine, 0];
-
-			Y = C[Affine, 2] * X0
-					+ C[Affine, 3] * Y0
-					+ C[Affine, 5]
-					+ A[Affine, 1];
+			X = C[Affine, 0] * X0 + C[Affine, 1] * Y0 + C[Affine, 4];
+			Y = C[Affine, 2] * X0 + C[Affine, 3] * Y0 + C[Affine, 5];
 
 			X0 = X;
 			Y0 = Y;
 
+			Point S;
+			ToScreen(PointD(X, Y), S);
+
 			// отрисовка изображения каждые ItersForPrint раз
-			Bmp->SetPixel(X, Y, P->Color);
-			if (i % ItersForPrint == 0)
-				G->DrawImage(Bmp, 100, 100);
+			if ((S.X >= 0) && (S.X < SizePanel) && (S.Y >= 0) && (S.Y < SizePanel))
+				Bmp->SetPixel(S.X, S.Y, P->Color);
+				if (i % ItersForPrint == 0)
+					G->DrawImage(Bmp, 100, 100);
 		}
+
+		Xmin = -0.1; Ymin = -0.7; Xmax = 1.1; Ymax = 0.7;
 	}
 
 	// Процедура вычисления и отрисовки фрактала Жулиа(0) и Мандельброта(1)
-	private: System::Void DrawJuliaMandelbrot(Byte typeF)
+	private: System::Void DrawJulia(Void)
 	{
-		int iter = (inStepModeToolStripMenuItem->Checked)? 1 : 50;
+		Xmin = -2; Ymin = -2; Xmax = 2; Ymax = 2;
+
+		int iter = (inStepModeToolStripMenuItem->Checked)? 1 : 100;
 
 		while (iter--)
 		{
@@ -693,11 +720,8 @@ namespace FractalViewer {
 			{
 				for (int j = 0; j < panel1->Height; j++)
 				{
-					PointD W(0, 0), C(-0.22, -0.74), WT;
-					if (typeF == 0)
-						ToWorld(Point(i, j), W);
-					else
-						ToWorld(Point(i, j), C);
+					PointD W, C(-0.22, -0.74), WT;
+					ToWorld(Point(i, j), W);
 
 					for (int k = 0; k < NumIters; k++)
 					{
@@ -732,10 +756,63 @@ namespace FractalViewer {
 				NumIters++;
 			}
 		}
+
+		Xmin = -0.1; Ymin = -0.7; Xmax = 1.1; Ymax = 0.7;
+	}
+	
+	private: System::Void DrawMandelbrot(Void)
+	{
+		Xmin = -2; Ymin = -2; Xmax = 2; Ymax = 2;
+
+		int iter = (inStepModeToolStripMenuItem->Checked) ? 1 : 100;
+
+		while (iter--)
+		{
+			for (int i = 0; i < panel1->Width; i++)
+			{
+				for (int j = 0; j < panel1->Height; j++)
+				{
+					PointD W(0, 0), C, WT;
+					ToWorld(Point(i, j), C);
+
+					for (int k = 0; k < NumIters; k++)
+					{
+						// преобразование точек
+						WT.X = W.X * W.X - W.Y * W.Y + C.X;
+						WT.Y = 2 * W.X * W.Y + C.Y;
+
+						// выделение точек, не принадлежащих множеству
+						if (WT.X * WT.X + WT.Y * WT.Y > 4)
+						{
+							Bmp->SetPixel(i, j, B->Color);
+							break;
+						}
+
+						W.X = WT.X;
+						W.Y = WT.Y;
+					}
+
+					// выделение точек, принадлежащих множеству
+					if (WT.X * WT.X + WT.Y * WT.Y < 4)
+						Bmp->SetPixel(i, j, P->Color);
+				}
+
+				//отрисовка изображения
+				if ((inStepModeToolStripMenuItem->Checked) && (i % 3 == 0))
+					G->DrawImage(Bmp, 0, 0);
+			}
+
+			if (continuousModeToolStripMenuItem->Checked)
+			{
+				G->DrawImage(Bmp, 0, 0);
+				NumIters++;
+			}
+		}
+
+		Xmin = -0.1; Ymin = -0.7; Xmax = 1.1; Ymax = 0.7;
 	}
 
-	// Процедура вычисления и отрисовки странного аттрактора Лоренца
-	// Часть исходного кода функции взят с сайта  wikipedia.org
+	/*// Процедура вычисления и отрисовки странного аттрактора Лоренца
 	private: System::Void DrawLorenzAttractor(int plane)
 	{
 		type = ((plane == 0) ? LORENZ_ZX : LORENZ_XY);
@@ -762,7 +839,7 @@ namespace FractalViewer {
 			if (iters % 250 == 0)
 				G->DrawImage(Bmp, 0, 0);
 		} while (--iters);
-	}
+	}*/
 
 	// Пункт меню для начала отрисовки выбранного фрактала
 	private: System::Void drawToolStripMenuItem_Click(
@@ -786,18 +863,18 @@ namespace FractalViewer {
 				this->DrawIFSR();
 				break;
 			case MANDELBROT: 
-				this->DrawJuliaMandelbrot(1);
+				this->DrawMandelbrot();
 				break;
 			case JULIA:
-				this->DrawJuliaMandelbrot(0);
+				this->DrawJulia();
 				break;
-			case LORENZ_ZX:
+			/*case LORENZ_ZX:
 				this->ClearPanel();
 				this->DrawLorenzAttractor(0);
 				break;
 			case LORENZ_XY:
 				this->ClearPanel();
-				this->DrawLorenzAttractor(1);
+				this->DrawLorenzAttractor(1);*/
 		}
 	}
 
@@ -833,20 +910,17 @@ namespace FractalViewer {
 		
 		E0 = gcnew array<Byte, 2>(SizePanel, SizePanel);		// начальное множество E0
 
-		// начальное множество - треугольник
+		// начальное множество - квадрат
 		for (int i = 0; i < SizePanel; i++)
-			for (int g = i / 2, h = SizePanel / 2; g < SizePanel / 2, h < SizePanel - i / 2; g++, h++)
-			{
-				E0[g, i] = 1;
-				E0[h, i] = 1;
-			}
+			for (int h = 0; h < SizePanel; h++)
+				E0[i, h] = 1;
 
 		C = gcnew array<Double, 2>(NumAffine, 6);				// матрица коэффициентов преобразований
 
 		// Ковер Серпинского
 		C[0, 0] = 0.5;		C[0, 1] = 0;		C[0, 2] = 0;		C[0, 3] = 0.5;		C[0, 4] = 0;		C[0, 5] = 0;
 		C[1, 0] = 0.5;		C[1, 1] = 0;		C[1, 2] = 0;		C[1, 3] = 0.5;		C[1, 4] = 0.5;		C[1, 5] = 0;
-		C[2, 0] = 0.5;		C[2, 1] = 0;		C[2, 2] = 0;		C[2, 3] = 0.5;		C[2, 4] = 0.25;		C[2, 5] = 0.5;
+		C[2, 0] = 0.5;		C[2, 1] = 0;		C[2, 2] = 0;		C[2, 3] = 0.5;		C[2, 4] = 0.25;		C[2, 5] = 0.43301;
 
 		this->DrawIFSD(NumIters, NumAffine, C, E0, SizePanel);
 	}
@@ -875,13 +949,11 @@ namespace FractalViewer {
 		
 		E0 = gcnew array<Byte, 2>(SizePanel, SizePanel);			// начальное множество E0
 
-		// начальное множество - треугольник
+		// начальное множество - квадрат
 		for (int i = 0; i < SizePanel; i++)
-			for (int g = i / 2, h = SizePanel / 2; g < SizePanel / 2, h < SizePanel - i / 2; g++, h++)
-			{
-				E0[g, i] = 1;
-				E0[h, i] = 1;
-			}
+			for (int h = 0; h < SizePanel; h++)
+				E0[i, h] = 1;
+
 		C = gcnew array<Double, 2>(NumAffine, 6);					// матрица коэффициентов преобразований
 
 		// Папоротник
@@ -908,13 +980,10 @@ namespace FractalViewer {
 
 		E0 = gcnew array<Byte, 2>(SizePanel, SizePanel);		// начальное множество E0
 
-		// начальное множество - треугольник
+		// начальное множество - квадрат
 		for (int i = 0; i < SizePanel; i++)
-			for (int g = i / 2, h = SizePanel / 2; g < SizePanel / 2, h < SizePanel - i / 2; g++, h++)
-			{
-				E0[g, i] = 1;
-				E0[h, i] = 1;
-			}
+			for (int h = 0; h < SizePanel; h++)
+				E0[i, h] = 1;
 
 		C = gcnew array<Double, 2>(NumAffine, 6);				// матрица коэффициентов преобразований
 
@@ -940,13 +1009,10 @@ namespace FractalViewer {
 		
 		E0 = gcnew array<Byte, 2>(SizePanel, SizePanel);		// начальное множество E0
 
-		// начальное множество - треугольник
+		// начальное множество - квадрат
 		for (int i = 0; i < SizePanel; i++)
-			for (int g = i / 2, h = SizePanel / 2; g < SizePanel / 2, h < SizePanel - i / 2; g++, h++)
-			{
-				E0[g, i] = 1;
-				E0[h, i] = 1;
-			}
+			for (int h = 0; h < SizePanel; h++)
+				E0[i, h] = 1;
 
 		C = gcnew array<Double, 2>(NumAffine, 6);				// матрица коэффициентов преобразований
 
@@ -966,7 +1032,7 @@ namespace FractalViewer {
 		this->ClearPanel();
 		type = MANDELBROT;
 		NumIters = 1;		// Число итераций
-		this->DrawJuliaMandelbrot(1);
+		this->DrawMandelbrot();
 	}
 
 	// Пример фрактала Жулиа
@@ -976,25 +1042,25 @@ namespace FractalViewer {
 		this->ClearPanel();
 		type = JULIA;
 		NumIters = 1;		// Число итераций
-		this->DrawJuliaMandelbrot(0);
+		this->DrawJulia();
 	}
 
 	// Пример странного аттрактора Лоренца (Z-X плоскость)
 	private: System::Void lorenzSystemZXToolStripMenuItem_Click(
 		System::Object^  sender, System::EventArgs^  e)
 	{
-		this->ClearPanel();
-		type = LORENZ_ZX;
-		this->DrawLorenzAttractor(0);
+		//this->ClearPanel();
+		//type = LORENZ_ZX;
+		//this->DrawLorenzAttractor(0);
 	}
 	
 	// Пример странного аттрактора Лоренца (X-Y плоскость)
 	private: System::Void lorenzSystemXYToolStripMenuItem_Click(
 		System::Object^  sender, System::EventArgs^  e)
 	{
-		this->ClearPanel();
-		type = LORENZ_XY;
-		this->DrawLorenzAttractor(1);
+		//this->ClearPanel();
+		//type = LORENZ_XY;
+		//this->DrawLorenzAttractor(1);
 	}
 
 	// Сохранение полученного рисунка
