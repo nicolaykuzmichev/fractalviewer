@@ -568,12 +568,9 @@ namespace FractalViewer {
 		}
 
 		Generic::List<PointD> ^intmd_pointList = Base;
-		delete Base;
 		Base = Img;
 		intmd_pointList->Clear();
-		delete Img;
 		Img = intmd_pointList;
-		delete intmd_pointList;
 
 		// отрисовка изображения
 		for (unsigned long long i = 0, j = (Base->Count - 1); i < (Base->Count)/2, j >=(Base->Count)/2; i++, j--)
